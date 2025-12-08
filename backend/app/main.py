@@ -1,3 +1,5 @@
+# main.py
+# main entry point for the FastAPI application
 from fastapi import FastAPI
 
 app = FastAPI(
