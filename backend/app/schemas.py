@@ -7,11 +7,11 @@ from pydantic import BaseModel, EmailStr
 class UserBase(BaseModel):
     email: EmailStr
 
-
+# extends UserBase to include password for user creation
 class UserCreate(UserBase):
     password: str
 
-
+# extends UserBase to include id and created_at for reading user data
 class UserRead(UserBase):
     id: int
     created_at: datetime
@@ -26,11 +26,11 @@ class PresetBase(BaseModel):
     name: str
     filters_json: str
 
-
+# extends PresetBase for creating new presets
 class PresetCreate(PresetBase):
     pass
 
-
+# extends PresetBase to include id and created_at for reading preset data
 class PresetRead(PresetBase):
     id: int
     created_at: datetime
