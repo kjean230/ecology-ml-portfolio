@@ -1,29 +1,30 @@
-# models_trees.py
-# creates a Tree model for storing hierarchical tree data
-# implementation will be added in the future
-
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, Float
-from sqlalchemy.orm import declarative_base, relationship
-from datetime import datetime
+# backend/app/models_trees.py
+from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
+
 
 class Tree(Base):
     __tablename__ = "trees"
 
-    # Defining columns for the Tree model
-    # these are columns that will be prepared for the values from CSV files
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+
+    # ID from the census (e.g., recordid)
     tree_id = Column(Integer, index=True)
+
+    # Year of census (1995, 2005, 2015)
     year = Column(Integer, index=True)
-    borough = Column(String(100), index=True)
+
+    # Basic attributes for S1
+    borough = Column(String(50), index=True)
     species = Column(String(255), index=True)
 
-    # Additional attributes for tree data
-    # the health score column will be used for ML predictions
-    health = Column(String(50), index=True)
-    health_score = Column(Integer, index=True)
+    # Health labels + numeric score
+    health = Column(String(50), index=True)        # "Good", "Fair", "Poor"
+    health_score = Column(Integer, index=True)     # 2 / 1 / 0
 
-    longitude = Column(Float, index=True)
-    latitude = Column(Float, index=True)
-    dbh = Column(Integer, index=True)  # Diameter at Breast Height
+    # Location and size
+    latitude = Column(Float)
+    longitude = Column(Float)
+    dbh = Column(Float)  # diameter at breast height
