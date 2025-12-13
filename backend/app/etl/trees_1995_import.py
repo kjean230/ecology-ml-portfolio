@@ -1,6 +1,5 @@
 # trees_1995_import.py
-# Script to import 1995 tree census data into the database
-
+# ETL script to import 1995 tree census data into the database
 import re
 from pathlib import Path
 
@@ -9,22 +8,35 @@ import pandas as pd
 from ..database import SessionLocal
 from ..models_trees import Tree
 
-# creates a path to the csv file
-# marks the year at 1995 and batch size at 5000
-CSV_TREE_PATH = Path(__file__).resolve().parent.parent / "data" / "1995_Street_Tree_Census.csv"
+CSV_FILE_PATH = Path(__file__).resolve().parent / "data" / "1995_Street_Tree_Census.csv"
 YEAR = 1995
 BATCH_SIZE = 5000
 
-# --- HELPER FUNCTIONS --- #
-
-# function to normalize columns within the csv file
 def normalize_headers(cols):
-    # implementation to normalize all headers to snake_case
+    """
+    Normalize column headers within the DataFrame.
+    """
     return [c.strip().lower().replace(" ", "_") for c in cols]
 
-# function to convert strings to integers, handling commas and spaces
-def to_int(s): 
+def to_int(s):
+    """
+    Convert a string to an integer, removing commas and spaces.
+    Returns None if conversion is not possible.
+    """
     if s is None:
         return None
     t = re.sub(r"[,\s]", "", str(s))
     return int(t) if t != "" and re.fullmatch(r"-?\d+", t) else None
+
+def to_int_bounds(s, low=0, high=100):
+    """
+    Convert a string to an integer within specified bounds.
+    Returns None if conversion is not possible or out of bounds.
+    """
+    v = to_int(s)
+    if v is None:
+        return None
+    return v if (low <= v <= high) else None
+
+def to_dec(s):
+    ...
